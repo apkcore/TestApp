@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         }
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv.addItemDecoration(new SimplePaddingDecoration(this));
+        rv.addItemDecoration(new LeftAndRightTagDecoration(this));
         RvAdapter adapter = new RvAdapter(this, strs);
         rv.setAdapter(adapter);
     }

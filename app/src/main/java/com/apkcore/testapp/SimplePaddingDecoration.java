@@ -8,6 +8,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+/**
+ * 画分割线
+ */
 public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
     private int dividerHeight;
     private Paint dividerPaint;
@@ -29,7 +32,7 @@ public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
         super.onDraw(c, parent, state);
         int childCount = parent.getChildCount();
         int left = parent.getPaddingLeft();
-        int right = parent.getWidth()-parent.getPaddingRight();
+        int right = parent.getWidth() - parent.getPaddingRight();
 
         for (int i = 0; i < childCount; i++) {
             View view = parent.getChildAt(i);
