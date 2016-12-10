@@ -32,7 +32,7 @@ public class LeftAndRightTagDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             int pos = parent.getChildAdapterPosition(child);
             boolean isLeft = pos % 2 == 0;
-            if (isLeft) {
+            if (!isLeft) {
                 float left = child.getLeft();
                 float right = left + tagWidth;
                 float top = child.getTop();

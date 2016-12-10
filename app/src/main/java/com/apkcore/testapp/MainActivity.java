@@ -22,13 +22,62 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv);
-        List<String> strs = new ArrayList<>();
-        for (int i = 0; i < 40; i++) {
-            strs.add("a" + i);
-        }
+       final List<String> strs = new ArrayList<>();
+        strs.add("aewwwwwwww");
+        strs.add("aewwwwwwww");
+        strs.add("aewwwwwwww");
+        strs.add("aewwwwwwww");
+        strs.add("aewwwwwwww");
+
+        strs.add("cewwwccwwwww");
+        strs.add("cewwwwwwww");
+        strs.add("cewwwwwwww");
+        strs.add("cewwwwwwww");
+
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+        strs.add("dsgfhdfshsh");
+
+
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
+        strs.add("zzzzzzzzzzzzzzzzz");
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv.addItemDecoration(new SimplePaddingDecoration(this));
         rv.addItemDecoration(new LeftAndRightTagDecoration(this));
+        rv.addItemDecoration(new SectionDecoration(this, new SectionDecoration.DecorationCallback() {
+            @Override
+            public long getGroupId(int position) {
+                return Character.toUpperCase(strs.get(position).charAt(0));
+            }
+
+            @Override
+            public String getGroupFirstLine(int position) {
+                return strs.get(position).substring(0, 1).toUpperCase();
+            }
+        }));
+
         RvAdapter adapter = new RvAdapter(this, strs);
         rv.setAdapter(adapter);
     }
