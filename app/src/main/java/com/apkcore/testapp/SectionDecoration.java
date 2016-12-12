@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -16,7 +17,7 @@ import android.view.View;
  * 标签section
  */
 
-public class SectionDecoration extends RecyclerView.ItemDecoration{
+public class SectionDecoration extends RecyclerView.ItemDecoration {
 
     private static final String TAG = "SectionDecoration";
 
@@ -26,7 +27,7 @@ public class SectionDecoration extends RecyclerView.ItemDecoration{
     private int topGap;
     private Paint.FontMetrics fontMetrics;
 
-    public SectionDecoration(Context context,DecorationCallback callback) {
+    public SectionDecoration(Context context, DecorationCallback callback) {
         this.callback = callback;
         Resources res = context.getResources();
 
@@ -57,26 +58,62 @@ public class SectionDecoration extends RecyclerView.ItemDecoration{
             outRect.top = 0;
         }
     }
+//
+//    @Override
+//    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+//        super.onDraw(c, parent, state);
+//        int left = parent.getPaddingLeft();
+//        int right = parent.getWidth() - parent.getPaddingRight();
+//        int childCount = parent.getChildCount();
+//        for (int i = 0; i < childCount; i++) {
+//            View view = parent.getChildAt(i);
+//            int position = parent.getChildAdapterPosition(view);
+//            long groupId = callback.getGroupId(position);
+//            if (groupId < 0) return;
+//            String textLine = callback.getGroupFirstLine(position).toUpperCase();
+//            if (position == 0 || isFirstInGroup(position)) {
+//                float top = view.getTop() - topGap;
+//                float bottom = view.getTop();
+//                c.drawRect(left, top, right, bottom, paint);//绘制红色矩形
+//                bottom -= 10;
+//                c.drawText(textLine, left, bottom, textPaint);//绘制文本
+//            }
+//        }
+//    }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDraw(c, parent, state);
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDrawOver(c, parent, state);
+        int itemCount = state.getItemCount();
+        int childCount = parent.getChildCount();
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
-        int childCount = parent.getChildCount();
+        float lineHeight = textPaint.getTextSize() + fontMetrics.descent;
+
+        long preGroupId, groupId = -1;
         for (int i = 0; i < childCount; i++) {
             View view = parent.getChildAt(i);
             int position = parent.getChildAdapterPosition(view);
-            long groupId = callback.getGroupId(position);
-            if (groupId < 0) return;
+
+            preGroupId = groupId;
+            groupId = callback.getGroupId(position);
+            if (groupId < 0 || groupId == preGroupId) continue;
+
             String textLine = callback.getGroupFirstLine(position).toUpperCase();
-            if (position == 0 || isFirstInGroup(position)) {
-                float top = view.getTop() - topGap;
-                float bottom = view.getTop();
-                c.drawRect(left, top, right, bottom, paint);//绘制红色矩形
-                bottom -= 10;
-                c.drawText(textLine, left, bottom, textPaint);//绘制文本
+            if (TextUtils.isEmpty(textLine)) continue;
+
+
+            int viewBottom = view.getBottom();
+            float textY = Math.max(topGap, view.getTop());
+
+            if (position + 1 < itemCount) {
+                long nextGroupId = callback.getGroupId(position + 1);
+                if (nextGroupId != groupId && viewBottom < textY) {
+                    textY = viewBottom;
+                }
             }
+            c.drawRect(left, textY - topGap, right, textY, paint);
+            c.drawText(textLine, left, textY, textPaint);
         }
     }
 
